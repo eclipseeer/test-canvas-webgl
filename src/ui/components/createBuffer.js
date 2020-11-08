@@ -1,37 +1,40 @@
 export const createBuffer = ({ gl, program }) => {
+  // при ініціалізації
   // prettier-ignore
-  const triangleVertices =
-    [ // X, Y,       R, G, B
-      0.0, 0.99,    1.0, 1.0, 0.0,
-      -0.5, -0.5,  1.0, 1.0, 0.0,
-      0.5, -0.5,   1.0, 1.0, 0.0,
-    ];
 
-  const triangleVertexBufferObject = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexBufferObject);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.STATIC_DRAW);
+  const positions = new Float32Array([
+    100, 100,
+    500, 500,
+    500, 100,
+    700, 600,
+    1750, 671,
+    650, 850,
+  ]);
 
-  const positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
-  const colorAttribLocation = gl.getAttribLocation(program, 'vertColor');
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+  /*********************************************************************/
 
+  const a_position = gl.getAttribLocation(program, 'a_position');
+  const u_resolution = gl.getUniformLocation(program, "u_resolution");
+
+  gl.enableVertexAttribArray(a_position);
   gl.vertexAttribPointer(
-    positionAttribLocation, // Attribute location
+    a_position, // Attribute location
     2, // Number of elements per attribute
     gl.FLOAT, // Type of elements
     false,
-    5 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
+    0, // Size of an individual vertex
     0, // Offset from the beginning of a single vertex to this attribute
   );
 
-  gl.vertexAttribPointer(
-    colorAttribLocation, // Attribute location
-    3, // Number of elements per attribute
-    gl.FLOAT, // Type of elements
-    false,
-    5 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
-    2 * Float32Array.BYTES_PER_ELEMENT, // Offset from the beginning of a single vertex to this attribute
-  );
+  // console.log(gl.getParameter(gl.VIEWPORT));
 
-  gl.enableVertexAttribArray(positionAttribLocation);
-  gl.enableVertexAttribArray(colorAttribLocation);
+
+  gl.useProgram(program);
+  gl.uniform2f(u_resolution, gl.canvas.width, gl.canvas.height);
+
+  gl.drawArrays(gl.TRIANGLES, 0, positions.length);
+
 };

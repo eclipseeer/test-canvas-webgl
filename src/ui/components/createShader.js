@@ -1,16 +1,10 @@
-export const createShader = ({ gl, type, text }) => {
-  const types = {
-    vertex: gl.VERTEX_SHADER,
-    fragment: gl.FRAGMENT_SHADER,
-  };
-
-  const shader = gl.createShader(types[type]);
-
-  gl.shaderSource(shader, text);
+export const createShader = (gl, type, glsl) => {
+  const shader = gl.createShader(type);
+  gl.shaderSource(shader, glsl);
   gl.compileShader(shader);
 
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-    throw new Error(`Cant compile ${type} shader`);
+    throw new Error(gl.getShaderInfoLog(shader));
 
   return shader;
 };
