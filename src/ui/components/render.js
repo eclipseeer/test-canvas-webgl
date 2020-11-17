@@ -1,15 +1,13 @@
-export const render = (gl, program, positions) => {
-  gl.useProgram(program);
+export const render = (gl, program, positions, coords, u_resolution, u_translate) => {
+  // console.log(coords);
 
-  const a_position = gl.getAttribLocation(program, 'a_position');
-  const u_resolution = gl.getUniformLocation(program, 'u_resolution');
-
-  gl.enableVertexAttribArray(a_position);
-  gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
   // console.log(gl.getParameter(gl.VIEWPORT));
 
-  gl.uniform2fv(u_resolution, [gl.canvas.width, gl.canvas.height]);
+  gl.uniform2f(u_resolution, gl.canvas.width, gl.canvas.height);
+  gl.uniform2f(u_translate, coords.x, coords.y);
 
+  gl.clearColor(115 / 255, 90 / 255, 200 / 255, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT);
   gl.drawArrays(gl.TRIANGLES, 0, positions.length);
 };

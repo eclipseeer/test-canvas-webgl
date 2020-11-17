@@ -1,6 +1,7 @@
 import { createProgram } from './createProgram';
 import { createShader } from './createShader';
 import { fragmentShader, vertexShader } from './shaders';
+import { getRectangle } from './getRectangle';
 
 export const init = canvas => {
   const gl = canvas.getContext('webgl');
@@ -18,13 +19,22 @@ export const init = canvas => {
 
   //prettier-ignore
   const positions = new Float32Array([
-    100, 100, 100, 120, 500, 120,
-    100, 100, 500, 100, 500, 120
+    ...getRectangle(400, 500, 500, 250),
+    ...getRectangle(100, 300, 100, 50),
   ]);
 
   const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
-  return { gl, program, positions };
+  const a_position = gl.getAttribLocation(program, 'a_position');
+  const u_resolution = gl.getUniformLocation(program, 'u_resolution');
+  const u_translate = gl.getUniformLocation(program, 'u_translate');
+
+  gl.enableVertexAttribArray(a_position);
+  gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
+
+  gl.useProgram(program);
+
+  return { gl, program, positions, u_resolution, u_translate };
 };
