@@ -8,6 +8,6 @@ export const getRectangle = (x, y, width, height) => {
     x2, y2,
     x2, y2,
     x2, y,
-    x, y
+    x, y,
   ];
 };
