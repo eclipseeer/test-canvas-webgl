@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { init } from '../../webgl/init';
-import { render } from '../../webgl/render';
-import { getMouseCoords } from '../../webgl/getMouseCoords';
-import { getSelectedRectangle } from '../../webgl/getSelectedRectangle';
-import styles from '../styles/App.module.css';
+import { init } from '../../../webgl/init';
+import { render } from '../../../webgl/render';
+import { getMouseCoords } from '../../../webgl/getMouseCoords';
+import { getSelectedRectangle } from '../../../webgl/getSelectedRectangle';
+import styles from './Canvas.module.css';
 
 export const Canvas = () => {
   const [isDragged, setIsDragged] = useState(false);
